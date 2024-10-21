@@ -2391,6 +2391,36 @@ class AppLocalizations {
         name: 'selectParentFolder');
   }
 
+  String get allowSubaddressing {
+    return Intl.message(
+        'Allow subaddressing',
+        name: 'allowSubaddressing');
+  }
+
+  String get disallowSubaddressing {
+    return Intl.message(
+        'Disallow subaddressing',
+        name: 'disallowSubaddressing');
+  }
+
+  String get toastMessageAllowSubaddressingSuccess {
+    return Intl.message(
+        'You have successfully allowed subaddressing for this folder',
+        name: 'toastMessageAllowSubaddressingSuccess');
+  }
+
+  String get toastMessageDisallowSubaddressingSuccess {
+    return Intl.message(
+        'You have successfully disallowed subaddressing for this folder',
+        name: 'toastMessageDisallowSubaddressingSuccess');
+  }
+
+  String get toastMessageSubaddressingFailure {
+    return Intl.message(
+        'There was an error dealing with the request',
+        name: 'toastMessageSubaddressingFailure');
+  }
+
   String get requestReadReceipt {
     return Intl.message(
       'Request read receipt',
@@ -2760,6 +2790,7 @@ class AppLocalizations {
       'This folder is already displayed in your primary folder',
       name: 'toastMessageShowFolderSuccess');
   }
+
   String get folderVisibility {
     return Intl.message(
       'Folder visibility',

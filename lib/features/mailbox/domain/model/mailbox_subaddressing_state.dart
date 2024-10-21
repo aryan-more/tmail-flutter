@@ -1,0 +1,4 @@
+enum MailboxSubaddressingState {
+  enabled,
+  disabled
+}

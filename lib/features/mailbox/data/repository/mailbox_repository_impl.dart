@@ -28,6 +28,7 @@ import 'package:tmail_ui_user/features/mailbox/domain/model/jmap_mailbox_respons
 import 'package:tmail_ui_user/features/mailbox/domain/model/mailbox_response.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/move_mailbox_request.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/rename_mailbox_request.dart';
+import 'package:tmail_ui_user/features/mailbox/domain/model/subaddressing_mailbox_request.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/subscribe_mailbox_request.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/subscribe_multiple_mailbox_request.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/repository/mailbox_repository.dart';
@@ -248,6 +249,11 @@ class MailboxRepositoryImpl extends MailboxRepository {
   @override
   Future<List<MailboxId>> subscribeMultipleMailbox(Session session, AccountId accountId, SubscribeMultipleMailboxRequest subscribeRequest) {
     return mapDataSource[DataSourceType.network]!.subscribeMultipleMailbox(session, accountId, subscribeRequest);
+  }
+
+  @override
+  Future<bool> subaddressingMailbox(Session session, AccountId accountId, SubaddressingMailboxRequest request) {
+    return mapDataSource[DataSourceType.network]!.subaddressingMailbox(session, accountId, request);
   }
 
   @override

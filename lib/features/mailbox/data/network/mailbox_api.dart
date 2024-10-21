@@ -37,9 +37,11 @@ import 'package:tmail_ui_user/features/mailbox/domain/extensions/role_extension.
 import 'package:tmail_ui_user/features/mailbox/domain/model/create_new_mailbox_request.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/get_mailbox_by_role_response.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/jmap_mailbox_response.dart';
+import 'package:tmail_ui_user/features/mailbox/domain/model/mailbox_subaddressing_action.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/mailbox_subscribe_state.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/move_mailbox_request.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/rename_mailbox_request.dart';
+import 'package:tmail_ui_user/features/mailbox/domain/model/subaddressing_mailbox_request.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/subscribe_mailbox_request.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/subscribe_multiple_mailbox_request.dart';
 import 'package:tmail_ui_user/main/error/capability_validator.dart';
@@ -399,6 +401,54 @@ class MailboxAPI with HandleSetErrorMixin {
 
     log('MailboxAPI::subscribeMultipleMailbox():listMailboxIdSubscribe: $listMailboxIdSubscribe');
     return listMailboxIdSubscribe ?? [];
+  }
+
+  Map<String, List<String>?> _updateRightsForSubaddressing(MailboxSubaddressingAction action, Map<String, List<String>?>? currentRights) {
+    final updatedRights = Map<String, List<String>?>.from(currentRights ?? {});
+
+    updatedRights.update('anyone', (rights) {
+          if (action == MailboxSubaddressingAction.allow) {
+            rights?.add('r');
+          } else {
+            rights?.remove('r');
+          }
+          return rights;
+    },
+        ifAbsent: () => action == MailboxSubaddressingAction.allow ? ['r'] : null
+    );
+
+    return updatedRights;
+  }
+
+  Future<bool> subaddressingMailbox(Session session, AccountId accountId, SubaddressingMailboxRequest request) async {
+    final setMailboxMethod = SetMailboxMethod(accountId)
+      ..addUpdates({
+        request.mailboxId.id : PatchObject({
+          MailboxProperty.rights: _updateRightsForSubaddressing(request.subaddressingAction, request.currentRights)
+        })
+      });
+
+    final requestBuilder = JmapRequestBuilder(httpClient, ProcessingInvocation());
+
+    final setMailboxInvocation = requestBuilder.invocation(setMailboxMethod);
+
+    final capabilities = setMailboxMethod.requiredCapabilities
+        .toCapabilitiesSupportTeamMailboxes(session, accountId);
+
+    final response = await (requestBuilder
+      ..usings(capabilities))
+        .build()
+        .execute();
+
+    final setMailboxResponse = response.parse<SetMailboxResponse>(
+        setMailboxInvocation.methodCallId,
+        SetMailboxResponse.deserialize);
+
+    return Future.sync(() async {
+      return setMailboxResponse?.updated?.containsKey(request.mailboxId.id) ?? false;
+    }).catchError((error) {
+      throw error;
+    });
   }
 
   Future<List<Mailbox>> createDefaultMailbox(

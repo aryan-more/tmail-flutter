@@ -60,6 +60,10 @@ mixin MailboxWidgetMixin {
         MailboxActions.markAsRead,
       MailboxActions.move,
       MailboxActions.rename,
+      if (mailbox.isSubaddressingAllowed)
+        MailboxActions.disallowSubaddressing
+      else
+        MailboxActions.allowSubaddressing,
       MailboxActions.delete,
       if (mailbox.isSubscribedMailbox)
         MailboxActions.disableMailbox

@@ -49,6 +49,8 @@ extension PresentationMailboxExtension on PresentationMailbox {
 
   bool get isSubscribedMailbox => isSubscribed != null && isSubscribed?.value == true;
 
+  bool get isSubaddressingAllowed => rights != null && rights?['anyone']?.contains('p') == true;
+
   bool get allowedToDisplayCountOfUnreadEmails => !(isTrash || isSpam || isDrafts || isTemplates || isSent) && countUnreadEmails > 0;
 
   bool get allowedToDisplayCountOfTotalEmails => (isTrash || isSpam || isDrafts) && countTotalEmails > 0;
@@ -100,6 +102,7 @@ extension PresentationMailboxExtension on PresentationMailbox {
       state: state,
       namespace: namespace,
       displayName: displayName,
+      rights: rights
     );
   }
 
@@ -121,6 +124,7 @@ extension PresentationMailboxExtension on PresentationMailbox {
       state: state,
       namespace: namespace,
       displayName: displayName,
+      rights: rights
     );
   }
 
@@ -142,6 +146,7 @@ extension PresentationMailboxExtension on PresentationMailbox {
       state: newMailboxState,
       namespace: namespace,
       displayName: displayName,
+      rights: rights
     );
   }
 
@@ -159,6 +164,7 @@ extension PresentationMailboxExtension on PresentationMailbox {
       myRights: myRights,
       isSubscribed: isSubscribed,
       namespace: namespace,
+      rights: rights
     );
   }
 
@@ -180,6 +186,7 @@ extension PresentationMailboxExtension on PresentationMailbox {
       state: state,
       namespace: namespace,
       displayName: displayName,
+      rights: rights
     );
   }
 
@@ -201,6 +208,7 @@ extension PresentationMailboxExtension on PresentationMailbox {
       state: state,
       namespace: namespace,
       displayName: displayName,
+      rights: rights
     );
   }
 }

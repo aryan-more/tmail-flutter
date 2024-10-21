@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2024-09-18T01:15:29.034686",
+  "@@last_modified": "2024-10-28T15:55:01.088722",
   "initializing_data": "Initializing data...",
   "@initializing_data": {
     "type": "text",
@@ -2310,6 +2310,36 @@
   },
   "selectParentFolder": "Select parent folder",
   "@selectParentFolder": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "allowSubaddressing": "Allow subaddressing",
+  "@allowSubaddressing": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "disallowSubaddressing": "Disallow subaddressing",
+  "@disallowSubaddressing": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "toastMessageAllowSubaddressingSuccess": "You have successfully allowed subaddressing for this folder",
+  "@toastMessageAllowSubaddressingSuccess": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "toastMessageDisallowSubaddressingSuccess": "You have successfully disallowed subaddressing for this folder",
+  "@toastMessageDisallowSubaddressingSuccess": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "toastMessageSubaddressingFailure": "There was an error dealing with the request",
+  "@toastMessageSubaddressingFailure": {
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
