@@ -41,7 +41,7 @@ import 'package:tmail_ui_user/features/mailbox/domain/model/mailbox_subaddressin
 import 'package:tmail_ui_user/features/mailbox/domain/model/mailbox_subscribe_state.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/move_mailbox_request.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/rename_mailbox_request.dart';
-import 'package:tmail_ui_user/features/mailbox/domain/model/subaddressing_mailbox_request.dart';
+import 'package:tmail_ui_user/features/mailbox/domain/model/subaddressing_request.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/subscribe_mailbox_request.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/subscribe_multiple_mailbox_request.dart';
 import 'package:tmail_ui_user/main/error/capability_validator.dart';
@@ -404,27 +404,31 @@ class MailboxAPI with HandleSetErrorMixin {
   }
 
   Map<String, List<String>?> _updateRightsForSubaddressing(MailboxSubaddressingAction action, Map<String, List<String>?>? currentRights) {
+    const String anyoneIdentifier = 'anyone';
+    const String postingRight = 'r';
+
     final updatedRights = Map<String, List<String>?>.from(currentRights ?? {});
 
-    updatedRights.update('anyone', (rights) {
+    updatedRights.update(anyoneIdentifier, (rights) {
           if (action == MailboxSubaddressingAction.allow) {
-            rights?.add('r');
+            rights?.add(postingRight);
           } else {
-            rights?.remove('r');
+            rights?.remove(postingRight);
           }
           return rights;
     },
-        ifAbsent: () => action == MailboxSubaddressingAction.allow ? ['r'] : null
+        ifAbsent: () => action == MailboxSubaddressingAction.allow ? [postingRight] : null
     );
 
     return updatedRights;
   }
 
-  Future<bool> subaddressingMailbox(Session session, AccountId accountId, SubaddressingMailboxRequest request) async {
+  Future<bool> subaddressingMailbox(Session session, AccountId accountId, SubaddressingRequest request) async {
     final setMailboxMethod = SetMailboxMethod(accountId)
       ..addUpdates({
         request.mailboxId.id : PatchObject({
-          MailboxProperty.rights: _updateRightsForSubaddressing(request.subaddressingAction, request.currentRights)
+          //MailboxProperty.name: "test2" //this works
+          'sharedWith': request.currentRights //this does not
         })
       });
 
@@ -436,19 +440,19 @@ class MailboxAPI with HandleSetErrorMixin {
         .toCapabilitiesSupportTeamMailboxes(session, accountId);
 
     final response = await (requestBuilder
-      ..usings(capabilities))
-        .build()
-        .execute();
+        ..usings(capabilities))
+      .build()
+      .execute();
 
     final setMailboxResponse = response.parse<SetMailboxResponse>(
         setMailboxInvocation.methodCallId,
         SetMailboxResponse.deserialize);
 
-    return Future.sync(() async {
-      return setMailboxResponse?.updated?.containsKey(request.mailboxId.id) ?? false;
-    }).catchError((error) {
-      throw error;
-    });
+    if (setMailboxResponse?.updated?.containsKey(request.mailboxId.id) ?? false) {
+      return true;
+    } else {
+      throw Exception("Failed to update mailbox rights.");
+    }
   }
 
   Future<List<Mailbox>> createDefaultMailbox(

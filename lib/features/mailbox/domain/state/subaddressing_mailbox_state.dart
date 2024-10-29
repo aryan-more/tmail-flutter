@@ -3,17 +3,17 @@ import 'package:core/presentation/state/success.dart';
 import 'package:jmap_dart_client/jmap/mail/mailbox/mailbox.dart';
 import 'package:tmail_ui_user/features/base/state/ui_action_state.dart';
 import 'package:jmap_dart_client/jmap/core/state.dart' as jmap;
-import 'package:tmail_ui_user/features/mailbox/domain/model/mailbox_subaddressing_action.dart';
+import 'package:tmail_ui_user/features/mailbox/domain/model/mailbox_subaddressing_state.dart';
 
-class LoadingSubaddressingMailbox extends UIState {}
+class LoadingSubaddressingMailbox extends LoadingState {}
 
-class SubaddressingMailboxSuccess extends UIActionState {
+class SubaddressingSuccess extends UIActionState {
   final MailboxId mailboxId;
-  final MailboxSubaddressingAction subaddressingAction;
+  final MailboxSubaddressingState subaddressingState;
 
-  SubaddressingMailboxSuccess(
+  SubaddressingSuccess(
     this.mailboxId, 
-    this.subaddressingAction,
+    this.subaddressingState,
     {
       jmap.State? currentEmailState,
       jmap.State? currentMailboxState,
@@ -23,12 +23,12 @@ class SubaddressingMailboxSuccess extends UIActionState {
   @override
   List<Object?> get props => [
     mailboxId,
-    subaddressingAction,
+    subaddressingState,
     ...super.props
   ];
 }
 
-class SubaddressingMailboxFailure extends FeatureFailure {
+class SubaddressingFailure extends FeatureFailure {
 
-  SubaddressingMailboxFailure(dynamic exception) : super(exception: exception);
+  SubaddressingFailure(dynamic exception) : super(exception: exception);
 }

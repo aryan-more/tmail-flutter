@@ -3,16 +3,16 @@ import 'package:core/presentation/state/success.dart';
 import 'package:dartz/dartz.dart';
 import 'package:jmap_dart_client/jmap/account_id.dart';
 import 'package:jmap_dart_client/jmap/core/session/session.dart';
-import 'package:tmail_ui_user/features/mailbox/domain/model/subaddressing_mailbox_request.dart';
+import 'package:tmail_ui_user/features/mailbox/domain/model/subaddressing_request.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/repository/mailbox_repository.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/state/subaddressing_mailbox_state.dart';
 
-class SubaddressingMailboxInteractor {
+class SubaddressingInteractor {
   final MailboxRepository _mailboxRepository;
 
-  SubaddressingMailboxInteractor(this._mailboxRepository);
+  SubaddressingInteractor(this._mailboxRepository);
 
-  Stream<Either<Failure, Success>> execute(Session session, AccountId accountId, SubaddressingMailboxRequest request) async* {
+  Stream<Either<Failure, Success>> execute(Session session, AccountId accountId, SubaddressingRequest request) async* {
     try {
       yield Right<Failure, Success>(LoadingSubaddressingMailbox());
 
@@ -21,16 +21,16 @@ class SubaddressingMailboxInteractor {
       final result = await _mailboxRepository.subaddressingMailbox(session, accountId, request);
 
       if (result) {
-        yield Right<Failure, Success>(SubaddressingMailboxSuccess(
+        yield Right<Failure, Success>(SubaddressingSuccess(
           request.mailboxId, 
           currentMailboxState: currentMailboxState,
-          request.subaddressingAction));
+          request.subaddressingState));
       } else {
-        yield Left<Failure, Success>(SubaddressingMailboxFailure(null));
+        yield Left<Failure, Success>(SubaddressingFailure(null));
       }
 
     } catch (exception) {
-      yield Left<Failure, Success>(SubaddressingMailboxFailure(exception));
+      yield Left<Failure, Success>(SubaddressingFailure(exception));
     }
   }
 }

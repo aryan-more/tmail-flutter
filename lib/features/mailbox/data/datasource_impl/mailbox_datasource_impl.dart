@@ -22,7 +22,7 @@ import 'package:tmail_ui_user/features/mailbox/domain/model/get_mailbox_by_role_
 import 'package:tmail_ui_user/features/mailbox/domain/model/jmap_mailbox_response.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/move_mailbox_request.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/rename_mailbox_request.dart';
-import 'package:tmail_ui_user/features/mailbox/domain/model/subaddressing_mailbox_request.dart';
+import 'package:tmail_ui_user/features/mailbox/domain/model/subaddressing_request.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/subscribe_mailbox_request.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/subscribe_multiple_mailbox_request.dart';
 import 'package:tmail_ui_user/main/exceptions/exception_thrower.dart';
@@ -123,7 +123,7 @@ class MailboxDataSourceImpl extends MailboxDataSource {
   }
 
   @override
-  Future<bool> subaddressingMailbox(Session session, AccountId accountId, SubaddressingMailboxRequest request) {
+  Future<bool> subaddressingMailbox(Session session, AccountId accountId, SubaddressingRequest request) {
     return Future.sync(() async {
       return await mailboxAPI.subaddressingMailbox(session, accountId, request);
     }).catchError(_exceptionThrower.throwException);

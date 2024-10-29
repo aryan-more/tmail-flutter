@@ -6,6 +6,9 @@ import 'package:model/mailbox/select_mode.dart';
 
 extension PresentationMailboxExtension on PresentationMailbox {
 
+  static const String anyoneIdentifier = 'anyone';
+  static const String postingRight = 'r';
+
   bool get isActivated => state == MailboxState.activated;
 
   bool hasParentId() => parentId != null && parentId!.id.value.isNotEmpty;
@@ -49,7 +52,7 @@ extension PresentationMailboxExtension on PresentationMailbox {
 
   bool get isSubscribedMailbox => isSubscribed != null && isSubscribed?.value == true;
 
-  bool get isSubaddressingAllowed => rights != null && rights?['anyone']?.contains('p') == true;
+  bool get isSubaddressingAllowed => rights != null && rights?[anyoneIdentifier]?.contains(postingRight) == true;
 
   bool get allowedToDisplayCountOfUnreadEmails => !(isTrash || isSpam || isDrafts || isTemplates || isSent) && countUnreadEmails > 0;
 
