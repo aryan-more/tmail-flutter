@@ -55,6 +55,7 @@ mixin MailboxWidgetMixin {
     return [
       if (PlatformInfo.isWeb && mailbox.isSubscribedMailbox)
         MailboxActions.openInNewTab,
+      MailboxActions.copySubaddress,
       MailboxActions.newSubfolder,
       if (mailbox.countUnReadEmailsAsString.isNotEmpty)
         MailboxActions.markAsRead,

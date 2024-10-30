@@ -795,6 +795,12 @@ class AppLocalizations {
         name: 'email_address_copied_to_clipboard');
   }
 
+  String get emailSubaddressCopiedToClipboard {
+    return Intl.message(
+        'Email subaddress copied to clipboard',
+        name: 'emailSubaddressCopiedToClipboard');
+  }
+
   String get minimize {
     return Intl.message(
         'Minimize',
@@ -2627,6 +2633,13 @@ class AppLocalizations {
     return Intl.message(
       'Open in New Tab',
       name: 'openInNewTab',
+    );
+  }
+
+  String get copySubaddress {
+    return Intl.message(
+      'Copy email subaddress',
+      name: 'copySubaddress',
     );
   }
 

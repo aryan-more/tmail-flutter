@@ -5,6 +5,7 @@ import 'package:core/core.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:jmap_dart_client/jmap/account_id.dart';
@@ -1069,6 +1070,9 @@ class MailboxController extends BaseMailboxController with MailboxActionHandlerM
       case MailboxActions.openInNewTab:
         openMailboxInNewTabAction(mailbox);
         break;
+      case MailboxActions.copySubaddress:
+        copySubaddressAction(context, mailboxDashBoardController.userEmail, mailbox.getDisplayName(context));
+        break;
       case MailboxActions.disableSpamReport:
       case MailboxActions.enableSpamReport:
         mailboxDashBoardController.storeSpamReportStateAction();
@@ -1083,6 +1087,7 @@ class MailboxController extends BaseMailboxController with MailboxActionHandlerM
             imagePaths,
             mailbox.id,
             mailbox.getDisplayName(context),
+            mailboxDashBoardController.userEmail,
             mailbox.rights,
             onAllowAction: _handleSubaddressingAction
         );

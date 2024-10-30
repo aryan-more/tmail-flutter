@@ -9,6 +9,7 @@ import 'package:core/presentation/views/modal_sheets/edit_text_modal_sheet_build
 import 'package:core/utils/app_logger.dart';
 import 'package:core/utils/platform_info.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:jmap_dart_client/jmap/account_id.dart';
@@ -449,6 +450,7 @@ abstract class BaseMailboxController extends BaseController {
       ImagePaths imagePaths,
       MailboxId mailboxId,
       String mailboxName,
+      String userEmail,
       Map<String, List<String>?>? currentRights, {
         required Function(MailboxId, Map<String, List<String>?>?, MailboxActions) onAllowAction
       }) {
@@ -474,7 +476,7 @@ abstract class BaseMailboxController extends BaseController {
               ..subaddress('taylor swift taylor swift taylor swift')
               ..colorCancelButton(AppColor.colorContentEmail)
               ..onCloseButtonAction(() => popBack())
-              ..onCopyButtonAction(() => popBack())
+              ..onCopyButtonAction(() => copySubaddressAction(context, userEmail, mailboxName))
               ..onConfirmButtonAction(AppLocalizations.of(context).allow, () => onAllowAction(mailboxId, currentRights, MailboxActions.allowSubaddressing))
               ..onCancelButtonAction(AppLocalizations.of(context).cancel, () => popBack())
             ).build()),
@@ -594,5 +596,17 @@ abstract class BaseMailboxController extends BaseController {
     }
     mailboxNode = personalMailboxTree.value.findNodeOnFirstLevel((node) => node.item.name?.name.toLowerCase() == name);
     return mailboxNode;
+  }
+
+  void copySubaddressAction(BuildContext context, String userEmail, String folderName) {
+    int atIndex = userEmail.indexOf('@');
+    String localPart = userEmail.substring(0, atIndex);
+    String domain = userEmail.substring(atIndex + 1);
+    String subaddress = "$localPart+$folderName@$domain";
+
+    Clipboard.setData(ClipboardData(text: subaddress));
+    appToast.showToastSuccessMessage(
+        currentOverlayContext!,
+        AppLocalizations.of(currentContext!).emailSubaddressCopiedToClipboard);
   }
 }

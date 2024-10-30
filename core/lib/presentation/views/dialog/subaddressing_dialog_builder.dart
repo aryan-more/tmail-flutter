@@ -264,7 +264,7 @@ class SubaddressingDialogBuilder {
                         padding: const EdgeInsets.all(3),
                         backgroundColor: Colors.transparent,
                         margin: const EdgeInsetsDirectional.only(top: 16, end: 16),
-                        onTapActionCallback: _onCloseButtonAction
+                        onTapActionCallback: _onCopyButtonAction
                     )
                   ],
                 ),
