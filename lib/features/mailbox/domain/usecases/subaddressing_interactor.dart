@@ -12,19 +12,19 @@ class SubaddressingInteractor {
 
   SubaddressingInteractor(this._mailboxRepository);
 
-  Stream<Either<Failure, Success>> execute(Session session, AccountId accountId, SubaddressingRequest request) async* {
+  Stream<Either<Failure, Success>> execute(Session session, AccountId accountId, SubaddressingRequest subaddressingRequest) async* {
     try {
       yield Right<Failure, Success>(LoadingSubaddressingMailbox());
 
       final currentMailboxState = await _mailboxRepository.getMailboxState(session, accountId);
 
-      final result = await _mailboxRepository.subaddressingMailbox(session, accountId, request);
+      final result = await _mailboxRepository.handleSubaddressingRequest(session, accountId, subaddressingRequest);
 
       if (result) {
         yield Right<Failure, Success>(SubaddressingSuccess(
-          request.mailboxId, 
+          subaddressingRequest.mailboxId, 
           currentMailboxState: currentMailboxState,
-          request.subaddressingState));
+          subaddressingRequest.subaddressingAction));
       } else {
         yield Left<Failure, Success>(SubaddressingFailure(null));
       }

@@ -99,7 +99,7 @@ class MailboxCacheDataSourceImpl extends MailboxDataSource {
   }
 
   @override
-  Future<bool> subaddressingMailbox(Session session, AccountId accountId, SubaddressingRequest request) {
+  Future<bool> handleSubaddressingRequest(Session session, AccountId accountId, SubaddressingRequest request) {
     throw UnimplementedError();
   }
 

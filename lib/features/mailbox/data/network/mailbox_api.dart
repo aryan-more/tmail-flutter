@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:core/utils/app_logger.dart';
+import 'package:get/get.dart';
 import 'package:jmap_dart_client/http/http_client.dart';
 import 'package:jmap_dart_client/jmap/account_id.dart';
 import 'package:jmap_dart_client/jmap/core/capability/capability_identifier.dart';
@@ -403,32 +404,26 @@ class MailboxAPI with HandleSetErrorMixin {
     return listMailboxIdSubscribe ?? [];
   }
 
-  Map<String, List<String>?> _updateRightsForSubaddressing(MailboxSubaddressingAction action, Map<String, List<String>?>? currentRights) {
-    const String anyoneIdentifier = 'anyone';
-    const String postingRight = 'r';
+  List<String> _updateRightsForSubaddressing(MailboxSubaddressingAction action, List<String>? currentRights) {
+    const String postingRight = 'p';
+    final updatedRights = List<String>.from(currentRights ?? []);
 
-    final updatedRights = Map<String, List<String>?>.from(currentRights ?? {});
-
-    updatedRights.update(anyoneIdentifier, (rights) {
-          if (action == MailboxSubaddressingAction.allow) {
-            rights?.add(postingRight);
-          } else {
-            rights?.remove(postingRight);
-          }
-          return rights;
-    },
-        ifAbsent: () => action == MailboxSubaddressingAction.allow ? [postingRight] : null
-    );
+    if (action == MailboxSubaddressingAction.allow) {
+      updatedRights.addIf(!updatedRights.contains(postingRight), postingRight);
+    } else {
+      updatedRights.remove(postingRight);
+    }
 
     return updatedRights;
   }
 
-  Future<bool> subaddressingMailbox(Session session, AccountId accountId, SubaddressingRequest request) async {
+  Future<bool> handleSubaddressingRequest(Session session, AccountId accountId, SubaddressingRequest request) async {
+    const String anyoneIdentifier = 'anyone';
+
     final setMailboxMethod = SetMailboxMethod(accountId)
       ..addUpdates({
         request.mailboxId.id : PatchObject({
-          //MailboxProperty.name: "test2" //this works
-          'sharedWith': request.currentRights //this does not
+          'sharedWith/' + anyoneIdentifier: _updateRightsForSubaddressing(request.subaddressingAction, request.currentRights?[anyoneIdentifier])
         })
       });
 

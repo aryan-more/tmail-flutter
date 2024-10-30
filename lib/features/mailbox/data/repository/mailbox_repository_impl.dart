@@ -252,8 +252,8 @@ class MailboxRepositoryImpl extends MailboxRepository {
   }
 
   @override
-  Future<bool> subaddressingMailbox(Session session, AccountId accountId, SubaddressingRequest request) {
-    return mapDataSource[DataSourceType.network]!.subaddressingMailbox(session, accountId, request);
+  Future<bool> handleSubaddressingRequest(Session session, AccountId accountId, SubaddressingRequest request) {
+    return mapDataSource[DataSourceType.network]!.handleSubaddressingRequest(session, accountId, request);
   }
 
   @override

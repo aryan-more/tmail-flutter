@@ -123,9 +123,9 @@ class MailboxDataSourceImpl extends MailboxDataSource {
   }
 
   @override
-  Future<bool> subaddressingMailbox(Session session, AccountId accountId, SubaddressingRequest request) {
+  Future<bool> handleSubaddressingRequest(Session session, AccountId accountId, SubaddressingRequest request) {
     return Future.sync(() async {
-      return await mailboxAPI.subaddressingMailbox(session, accountId, request);
+      return await mailboxAPI.handleSubaddressingRequest(session, accountId, request);
     }).catchError(_exceptionThrower.throwException);
   }
 

@@ -1,11 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:jmap_dart_client/jmap/mail/mailbox/mailbox.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/mailbox_subaddressing_action.dart';
-import 'package:tmail_ui_user/features/mailbox/domain/model/mailbox_subaddressing_state.dart';
 
 class SubaddressingRequest with EquatableMixin {
 
-  final MailboxSubaddressingState subaddressingState;
   final MailboxSubaddressingAction subaddressingAction;
   final MailboxId mailboxId;
   final Map<String, List<String>?>? currentRights;
@@ -13,7 +11,6 @@ class SubaddressingRequest with EquatableMixin {
   SubaddressingRequest(
       this.mailboxId,
       this.currentRights,
-      this.subaddressingState,
       this.subaddressingAction
   );
 
@@ -21,7 +18,6 @@ class SubaddressingRequest with EquatableMixin {
   List<Object?> get props => [
     mailboxId,
     currentRights,
-    subaddressingState,
     subaddressingAction,
   ];
 }

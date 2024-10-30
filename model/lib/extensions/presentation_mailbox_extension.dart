@@ -7,7 +7,7 @@ import 'package:model/mailbox/select_mode.dart';
 extension PresentationMailboxExtension on PresentationMailbox {
 
   static const String anyoneIdentifier = 'anyone';
-  static const String postingRight = 'r';
+  static const String postingRight = 'p';
 
   bool get isActivated => state == MailboxState.activated;
 

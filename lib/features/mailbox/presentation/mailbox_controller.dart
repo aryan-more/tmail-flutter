@@ -34,7 +34,6 @@ import 'package:tmail_ui_user/features/mailbox/domain/constants/mailbox_constant
 import 'package:tmail_ui_user/features/mailbox/domain/exceptions/set_mailbox_name_exception.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/create_new_mailbox_request.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/mailbox_subaddressing_action.dart';
-import 'package:tmail_ui_user/features/mailbox/domain/model/mailbox_subaddressing_state.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/mailbox_subscribe_action_state.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/mailbox_subscribe_state.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/move_mailbox_request.dart';
@@ -1078,10 +1077,8 @@ class MailboxController extends BaseMailboxController with MailboxActionHandlerM
         _unsubscribeMailboxAction(mailbox.id);
         break;
       case MailboxActions.allowSubaddressing:
-        _allowSubaddressingAction(mailbox.id, mailbox.rights);
-        break;
       case MailboxActions.disallowSubaddressing:
-        _disallowSubaddressingAction(mailbox.id, mailbox.rights);
+        _handleSubaddressingAction(mailbox.id, mailbox.rights, actions);
         break;
       case MailboxActions.emptyTrash:
         emptyTrashAction(context, mailbox, mailboxDashBoardController);
@@ -1353,37 +1350,20 @@ class MailboxController extends BaseMailboxController with MailboxActionHandlerM
     }
   }
 
-  void _allowSubaddressingAction(MailboxId mailboxId, Map<String, List<String>?>? currentRights) {
+  void _handleSubaddressingAction(MailboxId mailboxId, Map<String, List<String>?>? currentRights, MailboxActions subaddressingAction) {
     final accountId = mailboxDashBoardController.accountId.value;
     final session = mailboxDashBoardController.sessionCurrent;
+
     if (session != null && accountId != null) {
       final allowSubaddressingRequest = SubaddressingRequest(
           mailboxId,
           currentRights,
-          MailboxSubaddressingState.enabled,
-          MailboxSubaddressingAction.allow
+          subaddressingAction == MailboxActions.allowSubaddressing ? MailboxSubaddressingAction.allow : MailboxSubaddressingAction.disallow
       );
 
       consumeState(_subaddressingInteractor.execute(session, accountId, allowSubaddressingRequest));
     } else {
       _handleSubaddressingFailure(SubaddressingFailure("session and accountId should not be null"));    }
-  }
-
-  void _disallowSubaddressingAction(MailboxId mailboxId, Map<String, List<String>?>? currentRights) {
-    final accountId = mailboxDashBoardController.accountId.value;
-    final session = mailboxDashBoardController.sessionCurrent;
-    if (session != null && accountId != null) {
-      final disallowSubaddressingRequest = SubaddressingRequest(
-          mailboxId,
-          currentRights,
-          MailboxSubaddressingState.disabled,
-          MailboxSubaddressingAction.disallow
-      );
-
-      consumeState(_subaddressingInteractor.execute(session, accountId, disallowSubaddressingRequest));
-    } else {
-      _handleSubaddressingFailure(SubaddressingFailure("session and accountId should not be null"));
-    }
   }
 
   void _handleSubaddressingFailure(SubaddressingFailure failure) {
@@ -1396,7 +1376,7 @@ class MailboxController extends BaseMailboxController with MailboxActionHandlerM
   void _handleSubaddressingSuccess(SubaddressingSuccess success) {
     appToast.showToastSuccessMessage(
       currentOverlayContext!,
-      success.subaddressingState == MailboxSubaddressingState.enabled
+      success.subaddressingAction == MailboxSubaddressingAction.allow
           ? AppLocalizations.of(currentContext!).toastMessageAllowSubaddressingSuccess
           : AppLocalizations.of(currentContext!).toastMessageDisallowSubaddressingSuccess,
     );

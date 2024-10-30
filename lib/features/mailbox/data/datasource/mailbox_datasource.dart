@@ -50,7 +50,7 @@ abstract class MailboxDataSource {
 
   Future<List<MailboxId>> subscribeMultipleMailbox(Session session, AccountId accountId, SubscribeMultipleMailboxRequest subscribeRequest);
 
-  Future<bool> subaddressingMailbox(Session session, AccountId accountId, SubaddressingRequest request);
+  Future<bool> handleSubaddressingRequest(Session session, AccountId accountId, SubaddressingRequest request);
 
   Future<List<Mailbox>> createDefaultMailbox(Session session, AccountId accountId, List<Role> listRole);
 
