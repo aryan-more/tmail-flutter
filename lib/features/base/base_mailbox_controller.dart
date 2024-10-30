@@ -450,7 +450,7 @@ abstract class BaseMailboxController extends BaseController {
       ImagePaths imagePaths,
       MailboxId mailboxId,
       String mailboxName,
-      String userEmail,
+      String subaddress,
       Map<String, List<String>?>? currentRights, {
         required Function(MailboxId, Map<String, List<String>?>?, MailboxActions) onAllowAction
       }) {
@@ -473,10 +473,10 @@ abstract class BaseMailboxController extends BaseController {
               ))
               ..content(AppLocalizations.of(context).message_confirmation_dialog_allow_subaddressing(mailboxName))
               ..addIcon(SvgPicture.asset(imagePaths.icRemoveDialog, fit: BoxFit.fill))
-              ..subaddress('taylor swift taylor swift taylor swift')
+              ..subaddress(subaddress)
               ..colorCancelButton(AppColor.colorContentEmail)
               ..onCloseButtonAction(() => popBack())
-              ..onCopyButtonAction(() => copySubaddressAction(context, userEmail, mailboxName))
+              ..onCopyButtonAction(() => copySubaddressAction(context, subaddress))
               ..onConfirmButtonAction(AppLocalizations.of(context).allow, () => onAllowAction(mailboxId, currentRights, MailboxActions.allowSubaddressing))
               ..onCancelButtonAction(AppLocalizations.of(context).cancel, () => popBack())
             ).build()),
@@ -598,15 +598,17 @@ abstract class BaseMailboxController extends BaseController {
     return mailboxNode;
   }
 
-  void copySubaddressAction(BuildContext context, String userEmail, String folderName) {
-    int atIndex = userEmail.indexOf('@');
-    String localPart = userEmail.substring(0, atIndex);
-    String domain = userEmail.substring(atIndex + 1);
-    String subaddress = "$localPart+$folderName@$domain";
-
+  void copySubaddressAction(BuildContext context, String subaddress) {
     Clipboard.setData(ClipboardData(text: subaddress));
     appToast.showToastSuccessMessage(
         currentOverlayContext!,
         AppLocalizations.of(currentContext!).emailSubaddressCopiedToClipboard);
+  }
+
+  String getSubaddress(String userEmail, String folderName) {
+    int atIndex = userEmail.indexOf('@');
+    String localPart = userEmail.substring(0, atIndex);
+    String domain = userEmail.substring(atIndex + 1);
+    return "$localPart+$folderName@$domain";
   }
 }

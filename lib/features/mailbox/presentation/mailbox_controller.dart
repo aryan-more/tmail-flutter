@@ -1071,7 +1071,9 @@ class MailboxController extends BaseMailboxController with MailboxActionHandlerM
         openMailboxInNewTabAction(mailbox);
         break;
       case MailboxActions.copySubaddress:
-        copySubaddressAction(context, mailboxDashBoardController.userEmail, mailbox.getDisplayName(context));
+        copySubaddressAction(
+            context,
+            getSubaddress(mailboxDashBoardController.userEmail, mailbox.getDisplayName(context)));
         break;
       case MailboxActions.disableSpamReport:
       case MailboxActions.enableSpamReport:
@@ -1087,7 +1089,7 @@ class MailboxController extends BaseMailboxController with MailboxActionHandlerM
             imagePaths,
             mailbox.id,
             mailbox.getDisplayName(context),
-            mailboxDashBoardController.userEmail,
+            getSubaddress(mailboxDashBoardController.userEmail, mailbox.getDisplayName(context)),
             mailbox.rights,
             onAllowAction: _handleSubaddressingAction
         );
