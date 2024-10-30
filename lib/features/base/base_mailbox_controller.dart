@@ -4,6 +4,7 @@ import 'package:core/presentation/utils/responsive_utils.dart';
 import 'package:core/presentation/views/bottom_popup/confirmation_dialog_action_sheet_builder.dart';
 import 'package:core/presentation/views/dialog/confirmation_dialog_builder.dart';
 import 'package:core/presentation/views/dialog/edit_text_dialog_builder.dart';
+import 'package:core/presentation/views/dialog/subaddressing_dialog_builder.dart';
 import 'package:core/presentation/views/modal_sheets/edit_text_modal_sheet_builder.dart';
 import 'package:core/utils/app_logger.dart';
 import 'package:core/utils/platform_info.dart';
@@ -437,6 +438,46 @@ abstract class BaseMailboxController extends BaseController {
           ..onConfirmButtonAction(AppLocalizations.of(context).delete, () => onDeleteMailboxAction(presentationMailbox))
           ..onCancelButtonAction(AppLocalizations.of(context).cancel, () => popBack())
         ).build()),
+        barrierColor: AppColor.colorDefaultCupertinoActionSheet,
+      );
+    }
+  }
+
+  void openConfirmationDialogSubaddressingAction(
+      BuildContext context,
+      ResponsiveUtils responsiveUtils,
+      ImagePaths imagePaths,
+      MailboxId mailboxId,
+      String mailboxName,
+      Map<String, List<String>?>? currentRights, {
+        required Function(MailboxId, Map<String, List<String>?>?, MailboxActions) onAllowAction
+      }) {
+    if (responsiveUtils.isLandscapeMobile(context) || responsiveUtils.isPortraitMobile(context)) {
+      (ConfirmationDialogActionSheetBuilder(context)
+        ..messageText(AppLocalizations.of(context).message_confirmation_dialog_allow_subaddressing(mailboxName))
+        ..onCancelAction(AppLocalizations.of(context).cancel, () => popBack())
+        ..onConfirmAction(AppLocalizations.of(context).allow, () => onAllowAction(mailboxId, currentRights, MailboxActions.allowSubaddressing))
+      ).show();
+    } else {
+      Get.dialog(
+        PointerInterceptor(
+            child: (SubaddressingDialogBuilder(imagePaths)
+              ..key(const Key('confirm_dialog_subaddressing'))
+              ..title(AppLocalizations.of(context).allowSubaddressing)
+              ..styleTitle(const TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w500,
+                  color: AppColor.colorTextButton
+              ))
+              ..content(AppLocalizations.of(context).message_confirmation_dialog_allow_subaddressing(mailboxName))
+              ..addIcon(SvgPicture.asset(imagePaths.icRemoveDialog, fit: BoxFit.fill))
+              ..subaddress('taylor swift taylor swift taylor swift')
+              ..colorCancelButton(AppColor.colorContentEmail)
+              ..onCloseButtonAction(() => popBack())
+              ..onCopyButtonAction(() => popBack())
+              ..onConfirmButtonAction(AppLocalizations.of(context).allow, () => onAllowAction(mailboxId, currentRights, MailboxActions.allowSubaddressing))
+              ..onCancelButtonAction(AppLocalizations.of(context).cancel, () => popBack())
+            ).build()),
         barrierColor: AppColor.colorDefaultCupertinoActionSheet,
       );
     }

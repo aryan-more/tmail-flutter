@@ -1077,6 +1077,16 @@ class MailboxController extends BaseMailboxController with MailboxActionHandlerM
         _unsubscribeMailboxAction(mailbox.id);
         break;
       case MailboxActions.allowSubaddressing:
+        openConfirmationDialogSubaddressingAction(
+            context,
+            responsiveUtils,
+            imagePaths,
+            mailbox.id,
+            mailbox.getDisplayName(context),
+            mailbox.rights,
+            onAllowAction: _handleSubaddressingAction
+        );
+        break;
       case MailboxActions.disallowSubaddressing:
         _handleSubaddressingAction(mailbox.id, mailbox.rights, actions);
         break;
@@ -1363,7 +1373,10 @@ class MailboxController extends BaseMailboxController with MailboxActionHandlerM
 
       consumeState(_subaddressingInteractor.execute(session, accountId, allowSubaddressingRequest));
     } else {
-      _handleSubaddressingFailure(SubaddressingFailure("session and accountId should not be null"));    }
+      _handleSubaddressingFailure(SubaddressingFailure("session and accountId should not be null"));
+    }
+
+    popBack();
   }
 
   void _handleSubaddressingFailure(SubaddressingFailure failure) {

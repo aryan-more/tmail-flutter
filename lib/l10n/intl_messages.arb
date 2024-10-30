@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2024-10-28T15:55:01.088722",
+  "@@last_modified": "2024-10-30T11:31:12.918372",
   "initializing_data": "Initializing data...",
   "@initializing_data": {
     "type": "text",
@@ -690,6 +690,16 @@
   },
   "message_confirmation_dialog_delete_folder": "\"{nameMailbox}\" folder and all of the sub-folders and messages it contains will be deleted and won't be able to recover. Do you want to continue to delete?",
   "@message_confirmation_dialog_delete_folder": {
+    "type": "text",
+    "placeholders_order": [
+      "nameMailbox"
+    ],
+    "placeholders": {
+      "nameMailbox": {}
+    }
+  },
+  "message_confirmation_dialog_allow_subaddressing": "You are about to allow anyone to send a mail directly to your folder \"{nameMailbox}\" using:",
+  "@message_confirmation_dialog_allow_subaddressing": {
     "type": "text",
     "placeholders_order": [
       "nameMailbox"
@@ -2316,6 +2326,12 @@
   },
   "allowSubaddressing": "Allow subaddressing",
   "@allowSubaddressing": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "allow": "Allow",
+  "@allow": {
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
