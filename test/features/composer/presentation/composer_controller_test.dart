@@ -285,6 +285,7 @@ void main() {
       final toRecipient = EmailAddress('to', 'to@linagora.com');
       final ccRecipient = EmailAddress('cc', 'cc@linagora.com');
       final bccRecipient = EmailAddress('bcc', 'bcc@linagora.com');
+      final replyToRecipient = EmailAddress('replyTo', 'bcc@linagora.com');
       final identity = Identity();
       final attachment = Attachment();
       const alwaysReadReceiptEnabled = true;
@@ -321,6 +322,7 @@ void main() {
             toRecipients: {toRecipient},
             ccRecipients: {ccRecipient},
             bccRecipients: {bccRecipient},
+            replyToRecipients: {replyToRecipient},
             identity: identity,
             attachments: [attachment],
             hasReadReceipt: alwaysReadReceiptEnabled
@@ -359,6 +361,7 @@ void main() {
             toRecipients: {toRecipient},
             ccRecipients: {ccRecipient},
             bccRecipients: {bccRecipient},
+            replyToRecipients: {replyToRecipient},
             identity: identity,
             attachments: [attachment],
             hasReadReceipt: false
@@ -400,6 +403,7 @@ void main() {
             toRecipients: {toRecipient},
             ccRecipients: {ccRecipient},
             bccRecipients: {bccRecipient},
+            replyToRecipients: {replyToRecipient},
             identity: selectedIdentity,
             attachments: [attachment],
             hasReadReceipt: false
@@ -440,6 +444,7 @@ void main() {
             toRecipients: {toRecipient},
             ccRecipients: {ccRecipient},
             bccRecipients: {bccRecipient},
+            replyToRecipients: {replyToRecipient},
             identity: identity,
             attachments: [attachment],
             hasReadReceipt: false
@@ -487,6 +492,7 @@ void main() {
             toRecipients: {toRecipient},
             ccRecipients: {ccRecipient},
             bccRecipients: {bccRecipient},
+            replyToRecipients: {replyToRecipient},
             identity: selectedIdentity,
             attachments: [attachment],
             hasReadReceipt: false
@@ -534,6 +540,7 @@ void main() {
             toRecipients: {toRecipient},
             ccRecipients: {ccRecipient},
             bccRecipients: {bccRecipient},
+            replyToRecipients: {replyToRecipient},
             identity: identity,
             attachments: [attachment],
             hasReadReceipt: false
@@ -591,6 +598,7 @@ void main() {
               toRecipients: {toRecipient},
               ccRecipients: {ccRecipient},
               bccRecipients: {bccRecipient},
+              replyToRecipients: {replyToRecipient},
               identity: selectedIdentity,
               attachments: [attachment],
               hasReadReceipt: false
@@ -662,6 +670,7 @@ void main() {
               toRecipients: {toRecipient},
               ccRecipients: {ccRecipient},
               bccRecipients: {bccRecipient},
+              replyToRecipients: {replyToRecipient},
               identity: selectedIdentity,
               attachments: [attachment],
               hasReadReceipt: false
@@ -727,6 +736,7 @@ void main() {
             toRecipients: {toRecipient},
             ccRecipients: {ccRecipient},
             bccRecipients: {bccRecipient},
+            replyToRecipients: {replyToRecipient},
             identity: identity,
             attachments: [attachment],
             hasReadReceipt: alwaysReadReceiptEnabled
@@ -766,6 +776,7 @@ void main() {
             toRecipients: {toRecipient},
             ccRecipients: {ccRecipient},
             bccRecipients: {bccRecipient},
+            replyToRecipients: {replyToRecipient},
             identity: identity,
             attachments: [attachment],
             hasReadReceipt: false
@@ -816,6 +827,7 @@ void main() {
             toRecipients: {toRecipient},
             ccRecipients: {ccRecipient},
             bccRecipients: {bccRecipient},
+            replyToRecipients: {replyToRecipient},
             identity: selectedIdentity,
             attachments: [attachment],
             hasReadReceipt: false
@@ -868,6 +880,7 @@ void main() {
             toRecipients: {toRecipient},
             ccRecipients: {ccRecipient},
             bccRecipients: {bccRecipient},
+            replyToRecipients: {replyToRecipient},
             identity: identity,
             attachments: [attachment],
             hasReadReceipt: false
@@ -925,6 +938,7 @@ void main() {
             toRecipients: {toRecipient},
             ccRecipients: {ccRecipient},
             bccRecipients: {bccRecipient},
+            replyToRecipients: {replyToRecipient},
             identity: selectedIdentity,
             attachments: [attachment],
             hasReadReceipt: false
@@ -981,6 +995,7 @@ void main() {
             toRecipients: {toRecipient},
             ccRecipients: {ccRecipient},
             bccRecipients: {bccRecipient},
+            replyToRecipients: {replyToRecipient},
             identity: identity,
             attachments: [attachment],
             hasReadReceipt: false
@@ -1039,6 +1054,7 @@ void main() {
               toRecipients: {toRecipient},
               ccRecipients: {ccRecipient},
               bccRecipients: {bccRecipient},
+              replyToRecipients: {replyToRecipient},
               identity: selectedIdentity,
               attachments: [attachment],
               hasReadReceipt: false
@@ -1111,6 +1127,7 @@ void main() {
               toRecipients: {toRecipient},
               ccRecipients: {ccRecipient},
               bccRecipients: {bccRecipient},
+              replyToRecipients: {replyToRecipient},
               identity: selectedIdentity,
               attachments: [attachment],
               hasReadReceipt: false
@@ -1177,6 +1194,7 @@ void main() {
             toRecipients: {toRecipient},
             ccRecipients: {ccRecipient},
             bccRecipients: {bccRecipient},
+            replyToRecipients: {replyToRecipient},
             identity: identity,
             attachments: [attachment],
             hasReadReceipt: alwaysReadReceiptEnabled
@@ -1216,6 +1234,7 @@ void main() {
             toRecipients: {toRecipient},
             ccRecipients: {ccRecipient},
             bccRecipients: {bccRecipient},
+            replyToRecipients: {replyToRecipient},
             identity: identity,
             attachments: [attachment],
             hasReadReceipt: alwaysReadReceiptEnabled
