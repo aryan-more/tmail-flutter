@@ -404,7 +404,7 @@ class MailboxAPI with HandleSetErrorMixin {
     return listMailboxIdSubscribe ?? [];
   }
 
-  List<String> _updateRightsForSubaddressing(MailboxSubaddressingAction action, List<String>? currentRights) {
+  List<String> updateRightsForSubaddressing(MailboxSubaddressingAction action, List<String>? currentRights) {
     const String postingRight = 'p';
     final updatedRights = List<String>.from(currentRights ?? []);
 
@@ -423,7 +423,7 @@ class MailboxAPI with HandleSetErrorMixin {
     final setMailboxMethod = SetMailboxMethod(accountId)
       ..addUpdates({
         request.mailboxId.id : PatchObject({
-          'sharedWith/' + anyoneIdentifier: _updateRightsForSubaddressing(request.subaddressingAction, request.currentRights?[anyoneIdentifier])
+          'sharedWith/' + anyoneIdentifier: updateRightsForSubaddressing(request.subaddressingAction, request.currentRights?[anyoneIdentifier])
         })
       });
 
