@@ -572,4 +572,83 @@ void main() {
       expect(spamId, isNull);
     });
   });
+
+  group('getSubaddress:test', () {
+    setUp(() {
+      getEmailsInMailboxInteractor = MockGetEmailsInMailboxInteractor();
+
+      when(emailReceiveManager.pendingEmailAddressInfo).thenAnswer((_) => BehaviorSubject.seeded(null));
+      when(emailReceiveManager.pendingEmailContentInfo).thenAnswer((_) => BehaviorSubject.seeded(null));
+      when(emailReceiveManager.pendingFileInfo).thenAnswer((_) => BehaviorSubject.seeded([]));
+
+      Get.put(mailboxDashboardController);
+      mailboxDashboardController.onReady();
+
+      mailboxController = MailboxController(
+          createNewMailboxInteractor,
+          deleteMultipleMailboxInteractor,
+          renameMailboxInteractor,
+          moveMailboxInteractor,
+          subscribeMailboxInteractor,
+          subscribeMultipleMailboxInteractor,
+          subaddressingInteractor,
+          createDefaultMailboxInteractor,
+          treeBuilder,
+          verifyNameInteractor,
+          getAllMailboxInteractor,
+          refreshAllMailboxInteractor);
+      mailboxController.onReady();
+
+      threadController = ThreadController(
+          getEmailsInMailboxInteractor,
+          refreshChangesEmailsInMailboxInteractor,
+          loadMoreEmailsInMailboxInteractor,
+          searchEmailInteractor,
+          searchMoreEmailInteractor,
+          getEmailByIdInteractor);
+      Get.put(threadController);
+
+      advancedFilterController = AdvancedFilterController();
+
+      mailboxDashboardController.sessionCurrent = testSession;
+      mailboxDashboardController.filterMessageOption.value = FilterMessageOption.all;
+      mailboxDashboardController.accountId.value = testAccountId;
+    });
+
+    test('should return subaddress with valid email and folder name', () {
+      final String userEmail = 'user@example.com';
+      final String folderName = 'folder';
+      final result = mailboxController.getSubaddress(userEmail, folderName);
+
+      expect(result, equals('user+folder@example.com'));
+    });
+
+    test('should throw an error if empty local part', () {
+      const userEmail = '@example.com';
+      const folderName = '';
+
+      expect(() => mailboxController.getSubaddress(userEmail, folderName), throwsA(isA<FormatException>()));
+    });
+
+    test('should throw an error if empty folder name', () {
+      const userEmail = 'user@example.com';
+      const folderName = '';
+
+      expect(() => mailboxController.getSubaddress(userEmail, folderName), throwsA(isA<FormatException>()));
+    });
+
+    test('should throw an error if empty domain', () {
+      const userEmail = 'user@';
+      const folderName = 'folder';
+
+      expect(() => mailboxController.getSubaddress(userEmail, folderName), throwsA(isA<FormatException>()));
+    });
+
+    test('should throw an error if absent `@`', () {
+      final userEmail = 'invalid-email-format';
+      final folderName = 'folder';
+
+      expect(() => mailboxController.getSubaddress(userEmail, folderName), throwsA(isA<RangeError>()));
+    });
+  });
 }

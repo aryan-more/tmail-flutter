@@ -606,9 +606,16 @@ abstract class BaseMailboxController extends BaseController {
   }
 
   String getSubaddress(String userEmail, String folderName) {
+    if (folderName.isEmpty) {
+      throw const FormatException('folder name should not be empty');
+    }
     int atIndex = userEmail.indexOf('@');
     String localPart = userEmail.substring(0, atIndex);
     String domain = userEmail.substring(atIndex + 1);
-    return "$localPart+$folderName@$domain";
+    if (atIndex > 0 && localPart.isNotEmpty && domain.isNotEmpty) {
+      return "$localPart+$folderName@$domain";
+    } else {
+      throw const FormatException('Invalid email format');
+    }
   }
 }
