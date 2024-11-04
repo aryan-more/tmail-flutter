@@ -4,7 +4,6 @@ import 'package:core/presentation/utils/responsive_utils.dart';
 import 'package:core/presentation/views/bottom_popup/confirmation_dialog_action_sheet_builder.dart';
 import 'package:core/presentation/views/dialog/confirmation_dialog_builder.dart';
 import 'package:core/presentation/views/dialog/edit_text_dialog_builder.dart';
-import 'package:core/presentation/views/dialog/subaddressing_dialog_builder.dart';
 import 'package:core/presentation/views/modal_sheets/edit_text_modal_sheet_builder.dart';
 import 'package:core/utils/app_logger.dart';
 import 'package:core/utils/platform_info.dart';
@@ -38,6 +37,7 @@ import 'package:tmail_ui_user/features/mailbox/presentation/model/mailbox_catego
 import 'package:tmail_ui_user/features/mailbox/presentation/model/mailbox_node.dart';
 import 'package:tmail_ui_user/features/mailbox/presentation/model/mailbox_tree.dart';
 import 'package:tmail_ui_user/features/mailbox/presentation/model/mailbox_tree_builder.dart';
+import 'package:tmail_ui_user/features/mailbox/presentation/widgets/copy_subaddress_widget.dart';
 import 'package:tmail_ui_user/features/mailbox_creator/domain/model/verification/duplicate_name_validator.dart';
 import 'package:tmail_ui_user/features/mailbox_creator/domain/model/verification/empty_name_validator.dart';
 import 'package:tmail_ui_user/features/mailbox_creator/domain/model/verification/name_with_space_only_validator.dart';
@@ -463,7 +463,7 @@ abstract class BaseMailboxController extends BaseController {
     } else {
       Get.dialog(
         PointerInterceptor(
-            child: (SubaddressingDialogBuilder(imagePaths)
+            child: (ConfirmDialogBuilder(imagePaths)
               ..key(const Key('confirm_dialog_subaddressing'))
               ..title(AppLocalizations.of(context).allowSubaddressing)
               ..styleTitle(const TextStyle(
@@ -473,10 +473,14 @@ abstract class BaseMailboxController extends BaseController {
               ))
               ..content(AppLocalizations.of(context).message_confirmation_dialog_allow_subaddressing(mailboxName))
               ..addIcon(SvgPicture.asset(imagePaths.icRemoveDialog, fit: BoxFit.fill))
-              ..subaddress(subaddress)
+              ..addWidgetContent(CopySubaddressWidget(
+                  context: context,
+                  imagePath: imagePaths,
+                  subaddress: subaddress,
+                  onCopyButtonAction: () => copySubaddressAction(context, subaddress),
+              ))
               ..colorCancelButton(AppColor.colorContentEmail)
               ..onCloseButtonAction(() => popBack())
-              ..onCopyButtonAction(() => copySubaddressAction(context, subaddress))
               ..onConfirmButtonAction(AppLocalizations.of(context).allow, () => onAllowAction(mailboxId, currentRights, MailboxActions.allowSubaddressing))
               ..onCancelButtonAction(AppLocalizations.of(context).cancel, () => popBack())
             ).build()),
