@@ -820,19 +820,18 @@ class ComposerController extends BaseController with DragDropFileMixin implement
         listToEmailAddress = List.from(recipients.value1.toSet());
         listCcEmailAddress = List.from(recipients.value2.toSet());
         listBccEmailAddress = List.from(recipients.value3.toSet());
-        listReplyToEmailAddress = List.empty(); //empty ? not sure about that
-        listReplyToEmailAddress = List.empty(); //empty ? not sure about that
+        listReplyToEmailAddress = List.from(recipients.value4.toSet());
       } else {
         listToEmailAddress = List.from(recipients.value1.toSet().filterEmailAddress(userName.value));
         listCcEmailAddress = List.from(recipients.value2.toSet().filterEmailAddress(userName.value));
         listBccEmailAddress = List.from(recipients.value3.toSet().filterEmailAddress(userName.value));
-        listReplyToEmailAddress = List.empty();
+        listReplyToEmailAddress = List.from(recipients.value4.toSet());
       }
     } else {
       listToEmailAddress = List.from(recipients.value1.toSet());
       listCcEmailAddress = List.from(recipients.value2.toSet());
       listBccEmailAddress = List.from(recipients.value3.toSet());
-      listReplyToEmailAddress = List.empty();
+      listReplyToEmailAddress = List.from(recipients.value4.toSet());
     }
 
     if (listToEmailAddress.isNotEmpty || listCcEmailAddress.isNotEmpty || listBccEmailAddress.isNotEmpty || listReplyToEmailAddress.isNotEmpty) {
