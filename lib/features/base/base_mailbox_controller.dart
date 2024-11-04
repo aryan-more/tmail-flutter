@@ -600,9 +600,7 @@ abstract class BaseMailboxController extends BaseController {
 
   void copySubaddressAction(BuildContext context, String subaddress) {
     Clipboard.setData(ClipboardData(text: subaddress));
-    appToast.showToastSuccessMessage(
-        currentOverlayContext!,
-        AppLocalizations.of(currentContext!).emailSubaddressCopiedToClipboard);
+    appToast.showToastSuccessMessage(context, AppLocalizations.of(context).emailSubaddressCopiedToClipboard);
   }
 
   String getSubaddress(String userEmail, String folderName) {
