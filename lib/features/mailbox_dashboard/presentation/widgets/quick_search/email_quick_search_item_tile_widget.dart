@@ -7,6 +7,7 @@ import 'package:model/email/presentation_email.dart';
 import 'package:model/extensions/presentation_email_extension.dart';
 import 'package:model/extensions/presentation_mailbox_extension.dart';
 import 'package:model/mailbox/presentation_mailbox.dart';
+import 'package:tmail_ui_user/features/thread/domain/model/search_query.dart';
 
 class EmailQuickSearchItemTileWidget extends StatelessWidget {
 
@@ -15,12 +16,14 @@ class EmailQuickSearchItemTileWidget extends StatelessWidget {
   final PresentationEmail _presentationEmail;
   final PresentationMailbox? _presentationMailbox;
   final EdgeInsetsGeometry? contentPadding;
+  final SearchQuery? query;
 
   EmailQuickSearchItemTileWidget(
       this._presentationEmail,
       this._presentationMailbox, {
       Key? key,
       this.contentPadding,
+      this.query,
   }) : super(key: key);
 
   @override
@@ -49,25 +52,41 @@ class EmailQuickSearchItemTileWidget extends StatelessWidget {
                      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                        Container(
                          constraints: BoxConstraints(maxWidth: maxWidthItem / 3),
-                         child: Text(_getInformationSender(),
-                             maxLines: 1,
-                             overflow: CommonTextStyle.defaultTextOverFlow,
-                             softWrap: CommonTextStyle.defaultSoftWrap,
-                             style: const TextStyle(
-                                 fontSize: 15,
-                                 fontWeight: FontWeight.w600,
-                                 color: Colors.black)),
+                         child: RichTextBuilder(
+                           textOrigin: _getInformationSender(),
+                           wordToStyle: query?.value ?? '',
+                           styleOrigin: const TextStyle(
+                             fontSize: 15,
+                             fontWeight: FontWeight.w600,
+                             color: Colors.black,
+                           ),
+                           styleWord: TextStyle(
+                             fontSize: 15,
+                             fontWeight: FontWeight.w600,
+                             color: Colors.black,
+                             backgroundColor: Colors.amberAccent[200],
+                           ),
+                         ),
                        ),
                        const SizedBox(width: 16),
                        Expanded(
-                         child: Text(_presentationEmail.getEmailTitle(),
-                             maxLines: 1,
-                             overflow: CommonTextStyle.defaultTextOverFlow,
-                             softWrap: CommonTextStyle.defaultSoftWrap,
-                             style: const TextStyle(
-                                 fontSize: 13,
-                                 fontWeight: FontWeight.normal,
-                                 color: Colors.black)),
+                         child: RichTextBuilder(
+                          textOrigin: _presentationEmail.getEmailTitle(),
+                          wordToStyle: query?.value ?? '',
+                          preMarkedText: _presentationEmail.sanitizedSearchSnippetSubject,
+                          ensureHighlightVisible: true,
+                          styleOrigin: const TextStyle(
+                            fontSize: 13,
+                            color: Colors.black,
+                            fontWeight: FontWeight.normal
+                          ),
+                          styleWord: TextStyle(
+                            fontSize: 13,
+                            backgroundColor: Colors.amberAccent[200],
+                            color: Colors.black,
+                            fontWeight: FontWeight.normal
+                          )
+                        ),
                        ),
                        if (_presentationEmail.hasAttachment == true)
                         Padding(
@@ -85,15 +104,23 @@ class EmailQuickSearchItemTileWidget extends StatelessWidget {
                                color: Colors.black))
                      ]),
                     const SizedBox(height: 3),
-                    Text(_presentationEmail.getPartialContent(),
-                        maxLines: 1,
-                        overflow: CommonTextStyle.defaultTextOverFlow,
-                        softWrap: CommonTextStyle.defaultSoftWrap,
-                        style: const TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.normal,
-                            color: AppColor.colorContentEmail))
-                    ]
+                    RichTextBuilder(
+                      textOrigin: _presentationEmail.getPartialContent(),
+                      wordToStyle: query?.value ?? '',
+                      preMarkedText: _presentationEmail.sanitizedSearchSnippetPreview,
+                      ensureHighlightVisible: true,
+                      styleOrigin: const TextStyle(
+                        fontSize: 13,
+                        color: AppColor.colorContentEmail,
+                        fontWeight: FontWeight.normal
+                      ),
+                      styleWord: TextStyle(
+                        fontSize: 13,
+                        color: AppColor.colorContentEmail,
+                        backgroundColor: Colors.amberAccent[200],
+                      )
+                    ),
+                  ]
                 ),
               ),
             ],
