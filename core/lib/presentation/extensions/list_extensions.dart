@@ -16,4 +16,8 @@ extension ListExtensions<T> on List<T> {
       validBuilder.build().toList(),
       validBuilder.build().toList());
   }
+
+  int countOccurences(T value) {
+    return where((element) => element == value).length;
+  }
 }
