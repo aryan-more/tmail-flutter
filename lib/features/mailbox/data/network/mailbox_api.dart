@@ -33,6 +33,7 @@ import 'package:tmail_ui_user/features/composer/domain/exceptions/set_method_exc
 import 'package:tmail_ui_user/features/mailbox/data/model/mailbox_change_response.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/exceptions/mailbox_exception.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/exceptions/set_mailbox_method_exception.dart';
+import 'package:tmail_ui_user/features/mailbox/domain/exceptions/set_mailbox_rights_exception.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/extensions/list_mailbox_id_extension.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/extensions/role_extension.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/create_new_mailbox_request.dart';
@@ -446,7 +447,7 @@ class MailboxAPI with HandleSetErrorMixin {
     if (setMailboxResponse?.updated?.containsKey(request.mailboxId.id) ?? false) {
       return true;
     } else {
-      throw Exception("Failed to update mailbox rights.");
+      throw SetMailboxRightsException();
     }
   }
 
