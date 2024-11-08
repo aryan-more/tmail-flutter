@@ -23,6 +23,7 @@ import 'package:model/mailbox/select_mode.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'package:tmail_ui_user/features/base/base_controller.dart';
 import 'package:tmail_ui_user/features/destination_picker/presentation/model/destination_picker_arguments.dart';
+import 'package:tmail_ui_user/features/mailbox/domain/exceptions/empty_folder_name_exception.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/mailbox_subscribe_action_state.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/mailbox_subscribe_state.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/subscribe_mailbox_request.dart';
@@ -609,15 +610,14 @@ abstract class BaseMailboxController extends BaseController {
 
   String getSubaddress(String userEmail, String folderName) {
     if (folderName.isEmpty) {
-      throw const FormatException('folder name should not be empty');
+      throw EmptyFolderNameException(folderName);
     }
-    int atIndex = userEmail.indexOf('@');
-    String localPart = userEmail.substring(0, atIndex);
-    String domain = userEmail.substring(atIndex + 1);
-    if (atIndex > 0 && localPart.isNotEmpty && domain.isNotEmpty) {
-      return "$localPart+$folderName@$domain";
-    } else {
-      throw const FormatException('Invalid email format');
+
+    final atIndex = userEmail.indexOf('@');
+    if (atIndex <= 0 || atIndex == userEmail.length - 1) {
+      throw FormatException('Invalid email format');
     }
+
+    return '${userEmail.substring(0, atIndex)}+$folderName@${userEmail.substring(atIndex + 1)}';
   }
 }
