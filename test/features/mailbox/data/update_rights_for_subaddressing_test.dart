@@ -10,7 +10,6 @@ void main() {
     const postingRight = 'p';
     final mailboxAPI = MailboxAPI(HttpClient(Dio()), Uuid());
 
-
     test('should add postingRight when action is allow and currentRights is empty', () {
       final result = mailboxAPI.updateRightsForSubaddressing(MailboxSubaddressingAction.allow, []);
       expect(result, contains(postingRight));
