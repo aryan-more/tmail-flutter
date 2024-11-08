@@ -1091,7 +1091,7 @@ class MailboxController extends BaseMailboxController with MailboxActionHandlerM
             mailbox.getDisplayName(context),
             getSubaddress(mailboxDashBoardController.userEmail, mailbox.getDisplayName(context)),
             mailbox.rights,
-            onAllowAction: _handleSubaddressingAction
+            onAllowSubaddressingAction: _handleSubaddressingAction
         );
         break;
       case MailboxActions.disallowSubaddressing:

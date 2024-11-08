@@ -52,6 +52,11 @@ import 'package:tmail_ui_user/main/routes/app_routes.dart';
 import 'package:tmail_ui_user/main/routes/dialog_router.dart';
 import 'package:tmail_ui_user/main/routes/route_navigation.dart';
 
+typedef RenameMailboxActionCallback = void Function(PresentationMailbox mailbox, MailboxName newMailboxName);
+typedef MovingMailboxActionCallback = void Function(PresentationMailbox mailboxSelected, PresentationMailbox? destinationMailbox);
+typedef DeleteMailboxActionCallback = void Function(PresentationMailbox mailbox);
+typedef AllowSubaddressingActionCallback = void Function(MailboxId, Map<String, List<String>?>?, MailboxActions);
+
 abstract class BaseMailboxController extends BaseController {
   final TreeBuilder _treeBuilder;
   final VerifyNameInteractor verifyNameInteractor;
@@ -311,7 +316,7 @@ abstract class BaseMailboxController extends BaseController {
     BuildContext context,
     PresentationMailbox presentationMailbox,
     ResponsiveUtils responsiveUtils, {
-    required Function(PresentationMailbox mailbox, MailboxName newMailboxName) onRenameMailboxAction
+    required RenameMailboxActionCallback onRenameMailboxAction
   }) {
     final listMailboxName = getListMailboxNameInParentMailbox(presentationMailbox);
 
@@ -381,7 +386,7 @@ abstract class BaseMailboxController extends BaseController {
     BuildContext context,
     PresentationMailbox mailboxSelected,
     MailboxDashBoardController dashBoardController, {
-    required Function(PresentationMailbox mailboxSelected, PresentationMailbox? destinationMailbox) onMovingMailboxAction
+    required MovingMailboxActionCallback onMovingMailboxAction
   }) async {
     final accountId = dashBoardController.accountId.value;
     final session = dashBoardController.sessionCurrent;
@@ -414,7 +419,7 @@ abstract class BaseMailboxController extends BaseController {
     ResponsiveUtils responsiveUtils,
     ImagePaths imagePaths,
     PresentationMailbox presentationMailbox, {
-    required Function(PresentationMailbox mailbox) onDeleteMailboxAction
+    required DeleteMailboxActionCallback onDeleteMailboxAction
   }) {
     if (responsiveUtils.isLandscapeMobile(context) || responsiveUtils.isPortraitMobile(context)) {
       (ConfirmationDialogActionSheetBuilder(context)
@@ -446,20 +451,20 @@ abstract class BaseMailboxController extends BaseController {
   }
 
   void openConfirmationDialogSubaddressingAction(
-      BuildContext context,
-      ResponsiveUtils responsiveUtils,
-      ImagePaths imagePaths,
-      MailboxId mailboxId,
-      String mailboxName,
-      String subaddress,
-      Map<String, List<String>?>? currentRights, {
-        required Function(MailboxId, Map<String, List<String>?>?, MailboxActions) onAllowAction
-      }) {
+    BuildContext context,
+    ResponsiveUtils responsiveUtils,
+    ImagePaths imagePaths,
+    MailboxId mailboxId,
+    String mailboxName,
+    String subaddress,
+    Map<String, List<String>?>? currentRights, {
+    required AllowSubaddressingActionCallback onAllowSubaddressingAction
+  }) {
     if (responsiveUtils.isLandscapeMobile(context) || responsiveUtils.isPortraitMobile(context)) {
       (ConfirmationDialogActionSheetBuilder(context)
         ..messageText(AppLocalizations.of(context).message_confirmation_dialog_allow_subaddressing(mailboxName))
         ..onCancelAction(AppLocalizations.of(context).cancel, () => popBack())
-        ..onConfirmAction(AppLocalizations.of(context).allow, () => onAllowAction(mailboxId, currentRights, MailboxActions.allowSubaddressing))
+        ..onConfirmAction(AppLocalizations.of(context).allow, () => onAllowSubaddressingAction(mailboxId, currentRights, MailboxActions.allowSubaddressing))
       ).show();
     } else {
       Get.dialog(
@@ -482,7 +487,7 @@ abstract class BaseMailboxController extends BaseController {
               ))
               ..colorCancelButton(AppColor.colorContentEmail)
               ..onCloseButtonAction(() => popBack())
-              ..onConfirmButtonAction(AppLocalizations.of(context).allow, () => onAllowAction(mailboxId, currentRights, MailboxActions.allowSubaddressing))
+              ..onConfirmButtonAction(AppLocalizations.of(context).allow, () => onAllowSubaddressingAction(mailboxId, currentRights, MailboxActions.allowSubaddressing))
               ..onCancelButtonAction(AppLocalizations.of(context).cancel, () => popBack())
             ).build()),
         barrierColor: AppColor.colorDefaultCupertinoActionSheet,
