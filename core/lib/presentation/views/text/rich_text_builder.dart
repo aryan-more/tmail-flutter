@@ -122,10 +122,15 @@ class _RichTextBuilderState extends State<RichTextBuilder> with AutomaticKeepAli
       final spanText = text.substring(startIndex, endIndex);
 
       if (!firstHighlightKeyed) {
-        spans.add(WidgetSpan(child: SizedBox.shrink(key: firstHighlightKey)));
+        spans.add(WidgetSpan(child: Text(
+          spanText,
+          key: firstHighlightKey,
+          style: styleWord,
+        )));
         firstHighlightKeyed = true;
+      } else {
+        spans.add(TextSpan(text: spanText, style: styleWord));
       }
-      spans.add(TextSpan(text: spanText, style: styleWord));
       // mark the boundary to start the next search from
       spanBoundary = endIndex;
       // continue until there are no more matches
@@ -165,16 +170,21 @@ class _RichTextBuilderState extends State<RichTextBuilder> with AutomaticKeepAli
       }
 
       // style the marked text
-      if (!firstHighlightKeyed) {
-        spans.add(WidgetSpan(child: SizedBox.shrink(key: firstHighlightKey)));
-        firstHighlightKeyed = true;
-      }
       final markedText = processingText.substring(
         startIndex + _startMark.length,
         endIndex);
-      spans.add(TextSpan(
-        text: markedText,
-        style: widget.styleWord));
+      if (!firstHighlightKeyed) {
+        spans.add(WidgetSpan(child: Text(
+          markedText,
+          key: firstHighlightKey,
+          style: widget.styleWord,
+        )));
+        firstHighlightKeyed = true;
+      } else {
+        spans.add(TextSpan( 
+          text: markedText,
+          style: widget.styleWord));
+      }
 
       // Process the next <mark>
       processingText = processingText.substring(endIndex + _endMark.length);
