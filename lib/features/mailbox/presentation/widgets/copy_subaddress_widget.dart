@@ -24,8 +24,6 @@ class CopySubaddressWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imagePaths = Get.find<ImagePaths>();
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
       child: Row(
