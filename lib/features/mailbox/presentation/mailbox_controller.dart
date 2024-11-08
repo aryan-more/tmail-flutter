@@ -33,6 +33,7 @@ import 'package:tmail_ui_user/features/email/presentation/model/composer_argumen
 import 'package:tmail_ui_user/features/home/data/exceptions/session_exceptions.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/constants/mailbox_constants.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/exceptions/set_mailbox_name_exception.dart';
+import 'package:tmail_ui_user/features/mailbox/domain/exceptions/subaddressing_exception.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/create_new_mailbox_request.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/mailbox_subaddressing_action.dart';
 import 'package:tmail_ui_user/features/mailbox/domain/model/mailbox_subscribe_action_state.dart';
@@ -1380,7 +1381,8 @@ class MailboxController extends BaseMailboxController with MailboxActionHandlerM
 
       consumeState(_subaddressingInteractor.execute(session, accountId, allowSubaddressingRequest));
     } else {
-      _handleSubaddressingFailure(SubaddressingFailure("session and accountId should not be null"));
+      _handleSubaddressingFailure(SubaddressingFailure.withException(
+          SubaddressingException("Session and accountId should not be null")));
     }
 
     popBack();

@@ -4,6 +4,7 @@ import 'package:jmap_dart_client/jmap/mail/mailbox/mailbox.dart';
 import 'package:tmail_ui_user/features/base/state/ui_action_state.dart';
 import 'package:jmap_dart_client/jmap/core/state.dart' as jmap;
 import 'package:tmail_ui_user/features/mailbox/domain/model/mailbox_subaddressing_action.dart';
+import 'package:tmail_ui_user/features/mailbox/domain/exceptions/subaddressing_exception.dart';
 
 class LoadingSubaddressingMailbox extends LoadingState {}
 
@@ -31,4 +32,7 @@ class SubaddressingSuccess extends UIActionState {
 class SubaddressingFailure extends FeatureFailure {
 
   SubaddressingFailure(dynamic exception) : super(exception: exception);
+
+  SubaddressingFailure.withException(SubaddressingException exception)
+      : super(exception: exception);
 }
