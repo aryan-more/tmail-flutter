@@ -57,14 +57,11 @@ dependencies:
       url: https://github.com/linagora/rich-text-composer.git
       ref: main
 
-  html_editor_enhanced:
-    git:
-      url: https://github.com/linagora/html-editor-enhanced.git
-      ref: main
+  html_editor_enhanced: ^2.6.0
 
   jmap_dart_client:
     git:
-      url: https://github.com/linagora/jmap-dart-client.git
+      url: https://github.com/aryan-more/jmap-dart-client
       ref: main
 
   contacts_service:
@@ -125,7 +122,7 @@ dependencies:
 
   flutter_svg: 2.0.9
 
-  dio: 5.0.0
+  dio: 5.7.0
 
   equatable: 2.0.5
 
@@ -153,7 +150,7 @@ dependencies:
 
   path_provider: 2.1.1
 
-  device_info_plus: 8.1.0
+  device_info_plus: 11.1.1
 
   permission_handler: 10.2.0
 
@@ -161,7 +158,7 @@ dependencies:
 
   hive: 2.2.3
 
-  pointer_interceptor: 0.10.1
+  pointer_interceptor: 0.10.1+2
 
   rxdart: 0.27.7
 
@@ -191,7 +188,7 @@ dependencies:
 
   byte_converter: 1.3.0
 
-  json_annotation: 4.8.0
+  json_annotation: 4.9.0
 
   url_launcher: 6.1.10
 
@@ -223,7 +220,7 @@ dependencies:
 
   flutter_keyboard_visibility: 6.0.0
 
-  extended_text: 13.0.2
+  extended_text: 14.1.0
 
   date_format: 2.0.7
 
@@ -253,7 +250,7 @@ dependencies:
 
   app_settings: 5.1.1
 
-  web_socket_channel: 2.4.3
+  web_socket_channel: 3.0.1
 
   tip_dialog: 4.0.0
 
@@ -263,7 +260,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  build_runner: 2.3.3
+  build_runner: ^2.4.13
 
   mockito: 5.4.4
 
@@ -277,7 +274,9 @@ dev_dependencies:
 
   xml: 6.3.0
 
-  json_serializable: 6.6.1
+  json_serializable: ^6.8.0
+
+  flutter_inappwebview: ^6.1.5
 
   http_mock_adapter: 0.4.2
 
@@ -290,12 +289,12 @@ dependency_overrides:
 
   # TODO: replace when upstream PR is merged:
   # https://github.com/miguelpruivo/flutter_file_picker/pull/1482
-  file_picker:
-    git:
-      url: https://github.com/linagora/flutter_file_picker
-      ref: email_supported_5.3.1
+  file_picker: ^8.1.3
+  visibility_detector: ^0.4.0+2
+  lints: ^5.0.0
+  flutter_inappwebview: ^6.1.5
 
-  json_annotation: 4.8.1
+  json_annotation: 4.9.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
